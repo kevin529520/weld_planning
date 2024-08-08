@@ -24,14 +24,14 @@ class readAruCo():
     # read Aruco pose from image
     def __init__(self) -> None:
         # camera 0
-        self.camera_matrix = np.array( [[1.35827380e+03, 0.00000000e+00, 9.64499616e+02],
-                                        [  0.00000000e+00, 1.35569983e+03, 5.67785628e+02 ],
-                                        [  0.,           0.,           1.        ]])
-        self.camera_dist = np.array([0.0433853,  -0.05228565,  0.00079905,  0.00208749, -0.01949841])
+        self.camera_matrix = np.array( [[ 522.1905267183170736, 0.0000000000000000, 308.8532705794233948  ],
+                  [ 0.0000000000000000, 522.8166355728753842, 234.2130798407917496 ],
+                  [ 0.0000000000000000, 0.0000000000000000, 1.0000000000000000 ]])
+        self.camera_dist = np.array([ 0.1058497356483027 ,-0.1488874492570700 ,0.0000000000000000 ,0.0000000000000000 ,-0.8698561798572152])
         self.arucoDict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_100)
         self.arucoParams = cv2.aruco.DetectorParameters_create()
         self.arucoParams.cornerRefinementMethod = cv2.aruco.CORNER_REFINE_CONTOUR
-        self.mark_size = 0.016
+        self.mark_size = 0.005
 
     def readPose(self,img):
         # return tuple(A,B): A is data, B is image
@@ -123,10 +123,11 @@ def pose2matrix(pose_vector):
 # from camera to robot tcp coordinate
 def camera2robot():
     # marker pose in camera
-    camera_origin = [0.01, 0.02, 0.03]
-    camera_e1=[1,0,0]
-    camera_e2=[0,1,0]
-    camera_e3=[0,0,1]
+    # camera_origin = [0.01, 0.02, 0.03]
+    camera_origin = [0.00227122, -0.00269389, 0.02171412]
+    camera_e1=[0.9974826,  -0.02152942, -0.0675644]
+    camera_e2=[-0.02716051, -0.99613216, -0.08356455]
+    camera_e3=[-0.06550398,  0.08518927, -0.99420924]
     # basis vector as column
     E_C = np.vstack((camera_e1,camera_e2,camera_e3)).T
 
