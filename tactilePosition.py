@@ -14,7 +14,8 @@ class readImg():
         
 
     def run(self):
-        ret, frame = self.cap_right.read()
+        # ret, frame = self.cap_right.read()
+        ret, frame = self.cap.read()
         return ret, frame
 
 
@@ -53,7 +54,10 @@ class readAruCo():
         rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(orders_corners, self.mark_size, self.camera_matrix, self.camera_dist)
 
         for i in range(len(ids)):
-            color_image_result = cv2.aruco.drawAxis(color_image_result, self.camera_matrix, self.camera_dist, rvec[i], tvec[i], self.mark_size)
+            
+            # color_image_result = cv2.aruco.drawAxis(color_image_result, self.camera_matrix, self.camera_dist, rvec[i], tvec[i], self.mark_size)
+            # color_image_result = cv2.aruco.drawFrameAxes(color_image_result, self.camera_matrix, self.camera_dist, rvec[i], tvec[i], 0.01)
+            color_image_result = cv2.drawFrameAxes(color_image_result, self.camera_matrix, self.camera_dist, rvec[i], tvec[i], 0.01)
         return np.hstack((order_ids, tvec.reshape(-1,3), rvec.reshape(-1,3))), color_image_result
 
 
@@ -65,7 +69,7 @@ class tactileTipPosition():
 
         self. marker2tip = np.array([[1,0,0,0],
                                      [0,1,0,0],
-                                     [0,0,1,-0.04]
+                                     [0,0,1,-0.04],
                                      [0,0,0,1]])
 
     def transfer(self, show_img_flag = False):
@@ -86,10 +90,18 @@ class tactileTipPosition():
                 cv2.waitKey()
 
             # from marker pose to tip position
+            # print('pose:',pose)
+            # pose: [[ 0.         -0.08010901 -0.05272539  0.18206681 -3.16545907  0.07335146
+#   -0.06071261]]
             temp = pose[0][1:]
-            temp_matrix = self.pose2matrix(temp)
-
+            print('二维码姿态向量',temp)
+            # print('diaplace:',temp[0:3] - pose)
+# temp: [-0.08010901 -0.05272539  0.18206681 -3.16545907  0.07335146 -0.06071261]
+            # temp_matrix = self.pose2matrix(temp)
+            temp_matrix = pose2matrix(temp)
+            print('二维码姿态矩阵',temp_matrix)
             tip_matrix = np.matmul(temp_matrix, self.marker2tip)
+            print('探头处的姿态矩阵',tip_matrix)
             flag = True
             break
         # tip position (x,y,z)
@@ -98,7 +110,7 @@ class tactileTipPosition():
         else:
             return False, 0
 
-# from 6D pose to 4x4 matrix
+    # from 6D pose to 4x4 matrix
 def pose2matrix(pose_vector):
     pose_matrix = np.eye(4)
     pose_matrix[0:3,3]=pose_vector[0:3]
@@ -145,5 +157,7 @@ if __name__ == "__main__":
 
     e = np.vstack((camera_e1,camera_e2,camera_e3)).T
     print(e)
+    a = tactileTipPosition()
+    print(a.transfer(True))
 
 
