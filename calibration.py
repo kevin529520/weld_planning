@@ -6,24 +6,26 @@ if not os.path.isdir(image_dir):
     os.mkdir(image_dir)
 
 camera=cv2.VideoCapture(1)
-camera.set(3,2592) #设置分辨率
-camera.set(4,1944)
+# camera.set(3,2592) #设置分辨率
+# camera.set(4,1944)
+camera.set(3,1920) #设置分辨率
+camera.set(4,1080)
 camera.set(cv2.CAP_PROP_AUTO_EXPOSURE,3)
 # camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25) # fixed exposure
 # camera.set(cv2.CAP_PROP_EXPOSURE,0.05)  # cam1-4:0.05 for 1080, 720
 
-i = 0
-while 1:
-    (grabbed, img) = camera.read()
-    cv2.imshow('img',img)
-    if cv2.waitKey(1) & 0xFF == ord('j'):  # 按j保存一张图片
-        i += 1
-        u = str(i)
-        firename=str(image_dir+u+'.jpg')
-        cv2.imwrite(firename, img)
-        print('写入：',firename)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+# i = 0
+# while 1:
+#     (grabbed, img) = camera.read()
+#     cv2.imshow('img',img)
+#     if cv2.waitKey(1) & 0xFF == ord('j'):  # 按j保存一张图片
+#         i += 1
+#         u = str(i)
+#         firename=str(image_dir+u+'.jpg')
+#         cv2.imwrite(firename, img)
+#         print('写入：',firename)
+#     if cv2.waitKey(1) & 0xFF == ord('q'):
+#         break
 
 print("图像采集完毕")
 print("开始识别")
@@ -37,13 +39,13 @@ criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001) # 阈
 #棋盘格模板规格
 # w = 4   # 10 - 1
 # h = 3   # 7  - 1
-w = 4   # 10 - 1
-h = 5   # 7  - 1
+w = 5   # 10 - 1
+h = 4   # 7  - 1
 
 # 世界坐标系中的棋盘格点,例如(0,0,0), (1,0,0), (2,0,0) ....,(8,5,0)，去掉Z坐标，记为二维矩阵
 objp = np.zeros((w*h,3), np.float32)
 objp[:,:2] = np.mgrid[0:w,0:h].T.reshape(-1,2)
-objp = objp*0.0015  # 18.1 mm  6.3mm 3.2mm
+objp = objp*1.5  # 18.1 mm  6.3mm 3.2mm
 
 # 储存棋盘格角点的世界坐标和图像坐标对
 objpoints = [] # 在世界坐标系中的三维点
@@ -76,7 +78,8 @@ for fname in images:
         # 将角点在图像上显示
         cv2.drawChessboardCorners(img, (w,h), corners, ret)
         cv2.namedWindow('findCorners', cv2.WINDOW_NORMAL)
-        cv2.resizeWindow('findCorners', 1280, 720)
+        # cv2.resizeWindow('findCorners', 1280, 720)
+        cv2.resizeWindow('findCorners', 1920, 1080)
         cv2.imshow('findCorners',img)
         cv2.waitKey(600)
 
