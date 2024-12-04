@@ -88,22 +88,32 @@ if __name__ == "__main__":
     import queue
     import  time
     q = queue.Queue(500)
+    print('q.qsize:', q.qsize())
     plt.ion()
+    print('plt.isinteractive():', plt.isinteractive())
     ax = plt.subplot()
-    while 1:
+    # while 1:
+    i = 0
+    while i < 1000:
+        print('i:', i)
+        i += 1
         ft = test.readDate()
-        time.sleep(120)
+        time.sleep(0.01)
         q.put(ft)
         if q.full():
             q.get()
+        print(np.array(q.queue)[:, 1])
         plt.plot(np.array(q.queue)[:, 0], label='fx')
         plt.plot(np.array(q.queue)[:, 1], label='fy')
         plt.plot(np.array(q.queue)[:, 2], label='fz')
         plt.legend(loc=3)
+
+        # print(np.array(q.queue)[:, 0])
         # ax2 = ax.twinx()
         # ax2.plot(np.array(q.queue)[:, 3], label='tx')
         # ax2.plot(np.array(q.queue)[:, 4], label='ty')
         # ax2.plot(np.array(q.queue)[:, 5], label='tz')
         # plt.legend()
+
         plt.pause(0.005)
         plt.clf()
