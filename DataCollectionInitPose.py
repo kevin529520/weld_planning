@@ -11,14 +11,14 @@ import datetime
 class readAruCo():
     # read Aruco pose from image
     def __init__(self) -> None:
-        self.camera_matrix = np.array([[302.08997788,   0.        , 325.50850109],
-                           [  0.        , 305.26831967, 170.27425144],
-                           [  0.        ,   0.        ,   1.        ]])
-        self.camera_dist = np.array([-0.3488709,   0.19554033, -0.00161501, -0.00039101, -0.08049281])
+        self.camera_matrix = np.array( [[3.20790520e+03, 0.00000000e+00, 1.01091874e+03],
+                [0.00000000e+00, 3.39787065e+03, 6.44844641e+02],
+                [0.00000000e+00, 0.00000000e+00, 1.00000000e+00]])
+        self.camera_dist = np.array( [ 3.40400374e-01, -2.65574509e+00,  9.96946780e-03,  8.68103031e-03,  -4.46459652e+01])
         self.arucoDict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_100)
         self.arucoParams = cv2.aruco.DetectorParameters_create()
         self.arucoParams.cornerRefinementMethod = cv2.aruco.CORNER_REFINE_CONTOUR
-        self.mark_size = 0.016
+        self.mark_size = 0.006
         self.flag = True
 
     def readPose(self,img):
@@ -37,11 +37,11 @@ class readAruCo():
         if rpy[0,2]<0:
             rpy[0,2] = rpy[0,2] + 360
         pose = np.hstack((tvec[0]*1000, rpy))
-        color_image_result = cv2.aruco.drawAxis(img, self.camera_matrix, self.camera_dist, rvec[0], tvec[0], self.mark_size)
+        color_image_result = cv2.drawFrameAxes(img, self.camera_matrix, self.camera_dist, rvec[0], tvec[0], self.mark_size)
         return pose, color_image_result
 
 # initialization
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(0)
 readPose = readAruCo()
 time.sleep(1)
 
@@ -53,7 +53,7 @@ for i in range(100):
     ret, color_image = cap.read()
     tc = time.time()
     if ret:
-        pose, resultImg = readPose(color_image)
+        pose, resultImg = readPose.readPose(color_image)
         data_list.append(pose)
     else:
         continue
@@ -66,4 +66,5 @@ if not os.path.isdir(dirname):
 
 file_name ='init_pose.txt'
 
+print(data_list)
 np.savetxt(file_name, data_list)
