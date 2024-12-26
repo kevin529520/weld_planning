@@ -10,6 +10,7 @@
 import socket
 import numpy as np
 import struct
+import os
 
 # s_gt = socket.socket()
 # s_gt.connect(('192.168.1.1', 49151))
@@ -94,10 +95,14 @@ if __name__ == "__main__":
     ax = plt.subplot()
     # while 1:
     i = 0
-    while i < 1000:
+
+    data_list = []
+
+    while i < 100:
         print('i:', i)
         i += 1
         ft = test.readDate()
+        data_list.append(ft)
         time.sleep(0.01)
         q.put(ft)
         if q.full():
@@ -117,3 +122,22 @@ if __name__ == "__main__":
 
         plt.pause(0.005)
         plt.clf()
+
+    # save data
+    dirname = './data/ft'
+    if not os.path.isdir(dirname):
+        os.makedirs(dirname)
+    
+
+    # 将 data_list 转换为 numpy 数组
+    data_array = np.array(data_list)
+    data_reshaped = data_array.reshape(data_array.shape[0], -1)
+    print(data_array)
+
+
+    file_name ='init_force.txt'
+
+    print(data_list)
+    # np.savetxt(file_name, data_list)
+    np.savetxt(dirname + '/' + file_name, data_reshaped)
+    np.save(dirname + '/' + file_name, data_array)
