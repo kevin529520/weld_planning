@@ -59,8 +59,8 @@ class readAruCo():
         rr = spR.from_rotvec(rvec[0])
         # rpy = rr.as_euler('zyx', degrees=True)[0][::-1]
         rpy = rr.as_euler('zyx', degrees=True)
-        if rpy[0,2]<0:
-            rpy[0,2] = rpy[0,2] + 360
+        if rpy[0,0]<0:
+            rpy[0,0] = rpy[0,0] + 360
         pose = np.hstack((tvec[0]*1000, rpy))
         # color_image_result = cv2.aruco.drawAxis(img, self.camera_matrix, self.camera_dist, rvec[0], tvec[0], self.mark_size)
         color_image_result = cv2.drawFrameAxes(img, self.camera_matrix, self.camera_dist, rvec[0], tvec[0], self.mark_size)
