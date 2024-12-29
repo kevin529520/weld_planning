@@ -85,11 +85,12 @@ time.sleep(1)
 # [time,fx,fy,fz,tx,ty,tz,x,y,z,rx,ry,rz]
 data_list = []
 ts = time.time()
-for i in range(10000):
+for i in range(4000):
     if i % 100 == 0:
         print('i:', i)
     finger_base_ft = sensor_nano25.readDate()
-    df = finger_base_ft - readPose.f0   
+    # df = finger_base_ft - readPose.f0   
+    df = finger_base_ft  
     ret, color_image = cap.read()
     tc = time.time()
     if ret:
