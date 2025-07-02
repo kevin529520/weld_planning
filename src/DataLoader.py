@@ -9,13 +9,13 @@ import numpy as np
 import random
 
 
-def getInitPose(filename='init_pose.txt'):
+def getInitPose(filename='data/raw/camera1/init_pose.txt'):
     temp = np.loadtxt(filename)
     init_pose = np.mean(temp, axis=0)
     return init_pose
 
 
-def loadData(file_list:type.List = ["./data/1.txt"]):
+def loadData(file_list:type.List = ["data/raw/camera1/1.txt"]):
     train_dataset = []
     var_dataset = []
     for i in range(len(file_list)):
@@ -32,12 +32,12 @@ def loadData(file_list:type.List = ["./data/1.txt"]):
 
 
 class ForceDataset(Dataset):
-    def __init__(self, file_list=["./data/1.txt"], data_model='train'):
+    def __init__(self, file_list=["data/raw/camera1/1.txt"], data_model='train'):
         super().__init__()
         # [time,fx,fy,fz,tx,ty,tz,x,y,z,rx,ry,rz]
         self.train_data, self.var_data = loadData(file_list)
         # [x,y,z,rx,ry,rz]
-        self.init_pose = getInitPose(filename='init_pose.txt')
+        self.init_pose = getInitPose(filename='data/raw/camera1/init_pose.txt')
         self.dataset_model = data_model
 
     def __len__(self):
@@ -58,6 +58,6 @@ class ForceDataset(Dataset):
 
 
 if __name__ == "__main__":
-    ww = ForceDataset(file_list=["./data/1.txt"], data_model='train')
+    ww = ForceDataset(file_list=["data/raw/camera1/1.txt"], data_model='train')
     m = DataLoader(dataset=ww, batch_size=8, shuffle=True, num_workers=2, drop_last=False, pin_memory=False, collate_fn=None)
     print(len(ww))

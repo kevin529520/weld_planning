@@ -124,7 +124,7 @@ if __name__ == "__main__":
         plt.clf()
 
     # save data
-    dirname = './data/ft'
+    dirname = './data/raw/ft'
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
     
