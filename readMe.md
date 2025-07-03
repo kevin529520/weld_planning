@@ -89,13 +89,50 @@ $$S_t^r = M^r_c S_t^c$$
 
 
 
-# 4.力预测
-1. 力传感器（ATI Nano25），数据获取 ATI.py 
-2. 初始二维码姿态获取、保存， DataCollectionInitPose.py
-3. 采集二维码及力数据， DataCollection.py
-4. 姿态-力预测
-   1. 网络模型 Model.py
-   2. 数据读取 DataLoad.py
-   3. 模型训练 train.py
-   4. 模型使用 Model.py 中的predict类
+# 4. 力预测系统
+
+## 4.1 项目结构说明
+
+### 4.1.1 源代码文件 (src/)
+- **ATI.py**: ATI Nano25力传感器接口，提供Socket通信和数据读取功能
+- **DataCollectionInitPose.py**: 采集系统初始姿态和力数据，建立基准参考
+- **DataCollection.py**: 实时采集二维码姿态和对应力传感器数据
+- **DataLoader.py**: 数据加载和预处理，支持训练/验证集划分
+- **Model.py**: 深度学习模型定义（6D姿态→6D力预测）和推理接口
+- **train.py**: 模型训练管理，包含超参数配置和训练过程控制
+- **calibration.py**: 相机标定工具，用于图像采集和相机参数标定
+- **tactilePosition.py**: 基于二维码姿态计算触觉探针末端位置
+
+### 4.1.2 配置文件 (config/)
+- **controller_config.yaml**: 相机内参
+
+### 4.1.3 数据目录 (data/)
+- **raw/**: 原始数据存储
+  - **camera1/**: 相机姿态数据和初始位姿文件
+  - **ft/**: 力传感器数据和初始力文件
+- **processed/**: 处理后的数据
+  - 包含位置向量、力向量、时间戳等处理后的数据文件
+
+### 4.1.4 实验模块 (arucoTest/)
+包含ArUco二维码相关的Jupyter Notebook实验文件：
+- **arucoRead.ipynb**: ArUco码读取测试
+- **createAruco.ipynb**: ArUco码生成
+- **force_sensor_collect_only_image_ATI.ipynb**: ATI力传感器图像采集实验
+- **try.ipynb**: 其他实验测试
+
+### 4.1.5 配置文件
+- **requirements.txt**: Python依赖包列表
+- **readMe.md**: 项目说明文档
+
+## 4.2 系统工作流程
+1. **系统初始化**: 运行 `DataCollectionInitPose.py` 采集基准数据
+2. **数据采集**: 使用 `DataCollection.py` 实时采集姿态-力对应数据
+3. **模型训练**: 通过 `train.py` 训练姿态到力的映射模型
+4. **焊缝跟踪**: 使用 `tactilePosition.py` 基于二维码姿态计算触觉探针末端位置，结合 **Weld_cos_Use_UR_with_rotation** 工程实现焊缝跟踪
+
+
+## 4.3 应用场景
+- **焊缝触觉探索**: 通过预测接触力实现安全的触觉探索
+- **力控焊接**: 基于力反馈的精确焊接控制
+- **位置补偿**: 根据预测力进行机器人位置实时调整
 
