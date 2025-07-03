@@ -1,0 +1,11 @@
+ipywidgets==8.1.5
+jupyterlab_widgets==3.0.13
+mkl-service==2.4.0
+opencv-python==4.6.0.66
+ply==3.11
+PyQt5==5.15.10
+pyserial==3.5
+PyYAML==6.0.1
+tinyspline==0.6.0.post2
+ur-rtde==1.5.8
+widgetsnbextension==4.0.13

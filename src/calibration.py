@@ -1,7 +1,7 @@
 import cv2
 import os
 
-image_dir = './cam0-1280-0131/'
+image_dir = './data/cam0-1280-0131/'
 if not os.path.isdir(image_dir):
     os.mkdir(image_dir)
 

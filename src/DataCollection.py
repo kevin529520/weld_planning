@@ -21,7 +21,7 @@ class readAruCo():
         self.mark_size = 0.005
         self.flag = True
         # 加载初始位姿数据
-        init_pose_path = os.path.join('data', 'camera1', 'init_pose.txt')
+        init_pose_path = os.path.join('data', 'raw', 'camera1', 'init_pose.txt')
         try:
             pose_data = np.loadtxt(init_pose_path)
             # 计算参考位姿
@@ -34,7 +34,7 @@ class readAruCo():
             raise
 
         # 加载初始力数据
-        init_force_path = os.path.join('data', 'ft', 'init_force.txt')
+        init_force_path = os.path.join('data', 'raw', 'ft', 'init_force.txt')
         try:
             force_data = np.loadtxt(init_force_path)
             # 计算参考位姿
@@ -109,7 +109,7 @@ for i in range(4000):
         continue
 
 # save data
-dirname = './data/camera1'
+dirname = './data/raw/camera1'
 if not os.path.isdir(dirname):
     os.makedirs(dirname)
 

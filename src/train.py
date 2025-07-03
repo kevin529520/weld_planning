@@ -18,7 +18,7 @@ class Pose2ForceTrain(object):
         else:
             self.device = torch.device("cpu")
         # self.loss =torch.nn.MSELoss()
-        self.data_list = ["./data/1.txt","./data/2.txt"]
+        self.data_list = ["data/raw/camera1/1.txt","data/raw/camera1/2.txt"]
  
 
     def train(self):

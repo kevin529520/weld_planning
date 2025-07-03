@@ -122,7 +122,7 @@ print(data_array)
 
 
 
-dirname = './data/camera1'
+dirname = './data/raw/camera1'
 if not os.path.isdir(dirname):
     os.makedirs(dirname)
 

@@ -28,7 +28,7 @@ class Net(nn.Module):
     
 
 class predict():
-    def __init__(self, model_pth="99.pth"):
+    def __init__(self, model_pth="weights/weight.pth"):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.net = Net()
         self.net.load_state_dict(torch.load(model_pth))
